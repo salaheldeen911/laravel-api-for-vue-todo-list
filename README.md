@@ -7,7 +7,7 @@ This is the api for the todo-list Vue app useing laravel sanctum for authenticat
 
 ## Usage
 1- **Clone it** : git clone https://github.com/salaheldeen911/laravel-api-for-vue-todo-list.git <br>
-2- **Run**: composer install --ignore-platform-reqs <br>
+2- **Run**: composer install <br>
 3- **Create** : use mysql for creating a database named todo (from .env file) <br>
 4- **Run** : php artisan migrate:fresh <br>
 5- **Run** : php artisan serve <br>
