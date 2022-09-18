@@ -15,5 +15,5 @@ This is the api for the todo-list Vue app useing laravel sanctum for authenticat
 #### Note that:
 The todo-list Vue app expecting ``` http://127.0.0.1:8000/ ``` as the base url so it must run on the localhost and on port 8000.
 
-### Project link
+### Vue app link
 https://github.com/salaheldeen911/vue-todo-list
