@@ -6,11 +6,11 @@
 This is the api for the todo-list Vue app useing laravel sanctum for authentication.
 
 ## Usage
-1- **Clone it** : git clone https://github.com/salaheldeen911/laravel-api-for-vue-todo-list.git <br>
-2- **Run**: composer install <br>
+1- **Clone it** : ```git clone https://github.com/salaheldeen911/laravel-api-for-vue-todo-list.git``` <br>
+2- **Run**: ```composer install``` <br>
 3- **Create** : use mysql for creating a database named **todo** (from .env file) <br>
-4- **Run** : php artisan migrate:fresh <br>
-5- **Run** : php artisan serve <br>
+4- **Run** : ```php artisan migrate:fresh``` <br>
+5- **Run** : ```php artisan serve``` <br>
 
 #### Note that:
 The todo-list Vue app expecting ``` http://127.0.0.1:8000/ ``` as the base url so it must run on the localhost and on port 8000.
