@@ -38,6 +38,7 @@ class TodoService
     {
         try {
             $todo->update([
+                // toggling the status of done attribute >> true/false
                 "done" => !$todo->done
             ]);
 
