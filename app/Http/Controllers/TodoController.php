@@ -4,11 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use App\Http\Requests\StoreTodoRequest;
-use App\Http\Resources\TodoResource;
-use Carbon\Carbon;
+use App\Services\TodoService as ServicesTodoService;
 
 class TodoController extends Controller
 {
+  protected $service;
+
+  /**
+   * Constructs a new cart object.
+   *
+   * @param Illuminate\Session\SessionManager $session
+   */
+  public function __construct(ServicesTodoService $service)
+  {
+    $this->service = $service;
+  }
   /**
    * Display a listing of the resource.
    *
@@ -16,14 +26,7 @@ class TodoController extends Controller
    */
   public function index()
   {
-    try {
-      $res = Todo::orderBy('id', 'ASC')->get();
-
-      return response()->json(["data" => TodoResource::collection($res)]);
-    } catch (\Exception $e) {
-
-      return response()->json(["status" => "Not Good", "data" => $e->getMessage()]);
-    }
+    return $this->service->getTodos();
   }
 
   /**
@@ -34,17 +37,7 @@ class TodoController extends Controller
    */
   public function store(StoreTodoRequest $request)
   {
-    try {
-      Todo::create([
-        "body" => $request->body,
-        "created_at" => Carbon::now()
-      ]);
-
-      return response()->json(["status" => "Created Successfuly", "data" => TodoResource::collection(Todo::orderBy('id', 'ASC')->get())]);
-    } catch (\Exception $e) {
-
-      return response()->json(["status" => "Not Good", "data" => $e->getMessage()]);
-    }
+    return $this->service->storeTodo($request);
   }
 
   /**
@@ -55,16 +48,7 @@ class TodoController extends Controller
    */
   public function done(Todo $todo)
   {
-    try {
-      $todo->update([
-        "done" => !$todo->done
-      ]);
-
-      return response()->json(["status" => "Done Successfuly", "data" => new TodoResource(Todo::find($todo->id))]);
-    } catch (\Exception $e) {
-
-      return response()->json(["status" => "Not Good", "data" => $e->getMessage()]);
-    }
+    return $this->service->doneTodo($todo);
   }
 
   /**
@@ -76,17 +60,7 @@ class TodoController extends Controller
    */
   public function update(StoreTodoRequest $request, Todo $todo)
   {
-    try {
-      $todo->update([
-        "body" => $request->body,
-        "updated_at" => Carbon::now()
-      ]);
-
-      return response()->json(["status" => "Done Successfuly", "data" => new TodoResource(Todo::find($todo->id))]);
-    } catch (\Exception $e) {
-
-      return response()->json(["status" => "Not Good", "data" => $e->getMessage()]);
-    }
+    return $this->service->updateTodo($request, $todo);
   }
 
   /**
@@ -97,14 +71,7 @@ class TodoController extends Controller
    */
   public function destroy(Todo $todo)
   {
-    try {
-      $todo->delete();
-
-      return response()->json(["status" => "Deleted Successfuly", "data" => TodoResource::collection(Todo::orderBy('id', 'ASC')->get())]);
-    } catch (\Exception $e) {
-
-      return response()->json(["status" => "Not Good", "data" => $e->getMessage()]);
-    }
+    return $this->service->destroyTodo($todo);
   }
 
   /**
@@ -114,13 +81,6 @@ class TodoController extends Controller
    */
   public function deleteAll()
   {
-    try {
-      Todo::truncate();
-
-      return response()->json(["status" => "All Have been Deleted Successfuly", "data" => TodoResource::collection(Todo::orderBy('id', 'ASC')->get())]);
-    } catch (\Exception $e) {
-
-      return response()->json(["status" => "Not Good", "data" => $e->getMessage()]);
-    }
+    return $this->service->deleteAllTodos();
   }
 }

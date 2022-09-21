@@ -10,7 +10,15 @@ class Todo extends Model
 {
     use HasFactory;
 
-    public $fillable = ['body', 'done', 'updated_at', 'created_at'];
-    public $timestamps = false;
+    public $fillable = ['body', 'done', 'user_id'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function scopeUserTodos($query)
+    {
+        return $query->where('user_id', auth()->user()->id)->orderBy('id', 'ASC');
+    }
 }

@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('body');
             $table->boolean("done")->default(false);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp("updatedAt")->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->timestamps();
         });
     }
 
