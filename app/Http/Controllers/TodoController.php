@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Todo;
 use App\Http\Requests\StoreTodoRequest;
 use App\Services\TodoService as ServicesTodoService;
+use Illuminate\Support\Facades\Gate;
 
 class TodoController extends Controller
 {
@@ -18,7 +19,9 @@ class TodoController extends Controller
   public function __construct(ServicesTodoService $service)
   {
     $this->service = $service;
+    $this->authorizeResource(Todo::class, 'todo');
   }
+
   /**
    * Display a listing of the resource.
    *
@@ -60,6 +63,10 @@ class TodoController extends Controller
    */
   public function update(StoreTodoRequest $request, Todo $todo)
   {
+    if (!Gate::allows('update-todo', $todo)) {
+      abort(403, "Unauthorize");
+      return false;
+    }
     return $this->service->updateTodo($request, $todo);
   }
 
@@ -71,6 +78,10 @@ class TodoController extends Controller
    */
   public function destroy(Todo $todo)
   {
+    if (!Gate::allows('delete-todo', $todo)) {
+      abort(403, "Unauthorize");
+      return false;
+    }
     return $this->service->destroyTodo($todo);
   }
 

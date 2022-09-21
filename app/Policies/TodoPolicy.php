@@ -5,6 +5,9 @@ namespace App\Policies;
 use App\Models\Todo;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\Response;
+
 
 class TodoPolicy
 {
@@ -18,7 +21,7 @@ class TodoPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return Auth::check();
     }
 
     /**
@@ -41,7 +44,7 @@ class TodoPolicy
      */
     public function create(User $user)
     {
-        //
+        return Auth::check();
     }
 
     /**
@@ -53,7 +56,9 @@ class TodoPolicy
      */
     public function update(User $user, Todo $todo)
     {
-        //
+        return $user->id === $todo->user_id
+            ? Response::allow()
+            : Response::deny(abort(404, "Not Found"));
     }
 
     /**
@@ -65,7 +70,9 @@ class TodoPolicy
      */
     public function delete(User $user, Todo $todo)
     {
-        //
+        return $user->id === $todo->user_id
+            ? Response::allow()
+            : Response::deny(abort(404, "Not Found"));
     }
 
     /**
