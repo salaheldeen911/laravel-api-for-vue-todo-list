@@ -21,7 +21,7 @@ class TodoPolicy
      */
     public function viewAny(User $user)
     {
-        return Auth::check();
+        return auth('sanctum')->check();
     }
 
     /**
@@ -44,7 +44,7 @@ class TodoPolicy
      */
     public function create(User $user)
     {
-        return Auth::check();
+        return auth('sanctum')->check();
     }
 
     /**

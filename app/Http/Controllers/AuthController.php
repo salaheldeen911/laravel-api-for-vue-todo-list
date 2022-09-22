@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,16 +21,11 @@ class AuthController extends Controller
 
         $token = $user->createToken("token")->plainTextToken;
 
-        return response()->json(["user" => $user, "token" => $token]);
+        return response()->json(["user" => new UserResource($user), "token" => $token]);
     }
 
-    public function logout()
+    public function logout(User $user)
     {
-
-        /** @var \App\Models\User $user **/
-
-        $user = Auth::user();
-
         $user->tokens()->delete();
 
         return response()->json(["status" => "loged out"]);
@@ -45,11 +41,11 @@ class AuthController extends Controller
 
         $token = $user->createToken("token")->plainTextToken;
 
-        return response()->json(["user" => $user, "token" => $token]);
+        return response()->json(["user" => new UserResource($user), "token" => $token]);
     }
 
     public function check()
     {
-        return response()->json(["status" => auth('sanctum')->check()]);
+        // return response()->json(["status" => auth('sanctum')->check()]);
     }
 }
